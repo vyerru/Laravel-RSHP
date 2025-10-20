@@ -24,4 +24,13 @@ class SiteController extends Controller
     public function tentang() {
         
     }
+
+    public function cekKoneksi() {
+        try {
+            \DB::connection()->getPdo();
+            echo "Koneksi database berhasil!";
+        } catch (\Exception $e) {
+            echo "Koneksi database gagal: " . $e->getMessage();
+        }
+    }
 }
