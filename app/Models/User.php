@@ -20,7 +20,7 @@ class User extends Authenticatable
     protected $table = 'user';
     protected $primaryKey = 'iduser';
     protected $fillable = [
-        'name',
+        'nama',
         'email',
         'password',
     ];
@@ -49,6 +49,12 @@ class User extends Authenticatable
     }
 
     public function pemilik() {
-        return $this->hasOne(Pemilik::class, 'iduser', 'iduser');
+        return $this->hasOne(
+            Pemilik::class, 'iduser', 'iduser');
     }
+
+    public function roleUser() {
+        return $this->hasMany(RoleUser::class, 'iduser', 'iduser');
+    }
+
 }

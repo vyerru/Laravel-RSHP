@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pet;
 use Illuminate\Http\Request;
 
-class JenisHewan extends Controller
+class PetController extends Controller
 {
     public function index() {
-        return view('Admin.jenis-hewan');
+        $pet = Pet::all(); 
+        return view('Admin.Pet.index', compact('pet'));
     }
 }

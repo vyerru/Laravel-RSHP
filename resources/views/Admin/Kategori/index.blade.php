@@ -2,15 +2,15 @@
     <thead>
         <tr>
             <th>No</th>
-            <th>Nama Jenis Hewan</th>
+            <th>Nama Kategori</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($jenisHewan as $index => $hewan)
+        @foreach ($kategori as $isi_data)
         <tr>
-            <td>{{ $index + 1 }}</td>
-            <td>{{ $hewan->nama_jenis_hewan }}</td>
+            <td>{{ $isi_data->idkategori }}</td>
+            <td>{{ $isi_data->nama_kategori }}</td>
         </tr>
         @endforeach
     </tbody>
-</table>K
+</table>

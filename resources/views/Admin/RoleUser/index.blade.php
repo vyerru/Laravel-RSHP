@@ -2,18 +2,18 @@
     <thead>
         <tr>
             <th>No</th>
-            <th>Nama Pemilik</th>
-            <th>No Wa</th>
-            <th>Alamat</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($pemilik as $index => $isi_data)
+        @foreach ($roleUser as $index => $isi_data)
         <tr>
             <td>{{ $index + 1 }}</td>
             <td>{{ $isi_data->user->nama }}</td>
-            <td>{{ $isi_data->no_wa }}</td>
-            <td>{{ $isi_data->alamat }}</td>
+            <td>{{ $isi_data->role->nama_role }}</td>
+            <td>{{ $isi_data->status_label }}</td>
         </tr>
         @endforeach
     </tbody>

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
-class Pemilik extends Controller
+class RoleController extends Controller
 {
     public function index() {
-        return view('Admin.pemilik');
+        $role = Role::all(); 
+        return view('Admin.Role.index', compact('role'));
     }
 }
