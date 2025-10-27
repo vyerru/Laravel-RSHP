@@ -22,13 +22,24 @@ Route::get('/layanan', [SiteController::class, 'Layanan']);
 
 Route::get('/cek-koneksi', [SiteController::class, 'cekKoneksi'])->name('Site.cek-koneksi');
 
-Route::get('/admin/jenis-hewan', [JenisHewanController::class, 'index'])->name('Admin.jenis-hewan.index');
-Route::get('/admin/pemilik', [PemilikController::class, 'index'])->name('Admin.Pemilik.index');
 
-Route::get('/admin/role-user', [RoleUserController::class, 'index'])->name('Admin.RoleUser.index');
-Route::get('/admin/role', [RoleController::class, 'index'])->name('Admin.Pemilik.index');
-Route::get('/admin/pet', [PetController::class, 'index'])->name('Admin.Pet.index');
-Route::get('/admin/kategori', [KategoriController::class, 'index'])->name('Admin.Kategori.index');
-Route::get('admin/kategori-klinis', [KategoriKlinisController::class, 'index'])->name('Admin.KategoriKlinis.index');
-Route::get('admin/kode-tindakan', [KodeTindakanController::class, 'index'])->name('Admin.KodeTindakan.index');
-Route::get('admin/ras-hewan', [RasHewanController::class, 'index'])->name('Admin.RasHewan.index');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware('isAdministrator')->group(function (){
+    Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardAdminController::class, 'index'])->name('Admin.Dashboard.index');
+    Route::get('/admin/jenis-hewan', [JenisHewanController::class, 'index'])->name('Admin.jenis-hewan.index');
+    Route::get('/admin/pemilik', [PemilikController::class, 'index'])->name('Admin.Pemilik.index');
+    Route::get('/admin/role-user', [RoleUserController::class, 'index'])->name('Admin.RoleUser.index');
+    Route::get('/admin/role', [RoleController::class, 'index'])->name('Admin.Pemilik.index');
+    Route::get('/admin/pet', [PetController::class, 'index'])->name('Admin.Pet.index');
+    Route::get('/admin/kategori', [KategoriController::class, 'index'])->name('Admin.Kategori.index');
+    Route::get('admin/kategori-klinis', [KategoriKlinisController::class, 'index'])->name('Admin.KategoriKlinis.index');
+    Route::get('admin/kode-tindakan', [KodeTindakanController::class, 'index'])->name('Admin.KodeTindakan.index');
+    Route::get('admin/ras-hewan', [RasHewanController::class, 'index'])->name('Admin.RasHewan.index');
+});
+
+Route::middleware('isResepsionis')->group(function (){
+    Route::get('/resepsionis/dashboard', [App\Http\Controllers\Resepsionis\DashboardResepsionisController::class, 'index'])->name('Resepsionis.Dashboard.index');
+});
