@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\isAdministrator;
+use illuminate\Support\Facades\Auth;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,8 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'isAdministrator' => \App\Http\Middleware\IsAdministrator::class,
+            'isAdministrator' => App\Http\Middleware\isAdministrator::class,
             'isResepsionis' => \App\Http\Middleware\IsResepsionis::class,
+            'dokter' => \App\Http\Middleware\dokter::class,
+            'pemilik' => \App\Http\Middleware\pemilik::class,
+            'perawat' => \App\Http\Middleware\perawat::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

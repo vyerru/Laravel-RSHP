@@ -21,7 +21,7 @@
           <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Layanan</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Tentang</a></li>
-          <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
         </ul>
       </div>
     </div>
@@ -52,7 +52,7 @@
             kesayangan.
           </p>
           <div class="text-center mt-3">
-            <a href="login.php" class="btn btn-primary">Daftar Online Sekarang</a>
+            <a href={{ route('login') }} class="btn btn-primary">Daftar Online Sekarang</a>
           </div>
         </div>
       </div>
@@ -64,7 +64,6 @@
         <div class="row g-4">
           <div class="col-md-6 col-lg-4">
             <div class="card h-100">
-              <img src="Css\Gambar\open_recruit.png" class="card-img-top" alt="Rekrutmen Staf">
               <div class="card-body">
                 <h5 class="card-title">Open Recruit Staf RSHP Unair</h5>
                 <p class="card-text text-muted"><small>1 June 2025</small></p>
@@ -78,7 +77,6 @@
           </div>
           <div class="col-md-6 col-lg-4">
             <div class="card h-100">
-              <img src="Css\Gambar\senam_juara.jpg" class="card-img-top" alt="Tim Satu Sehat">
               <div class="card-body">
                 <h5 class="card-title">Tim Satu Sehat, Juara 1 Senam Bugar Airlangga</h5>
                 <p class="card-text text-muted"><small>4 November 2024</small></p>
@@ -92,7 +90,6 @@
           </div>
           <div class="col-md-6 col-lg-4">
             <div class="card h-100">
-              <img src="Css\Gambar\seminar_workshop.webp" class="card-img-top" alt="Workshop Sitologi">
               <div class="card-body">
                 <h5 class="card-title">Seminar & Workshop Sitologi RSHP 2024</h5>
                 <p class="card-text text-muted"><small>27 August 2024</small></p>

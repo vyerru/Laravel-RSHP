@@ -5,9 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;
 
-class isAdministrator
+class pemilik
 {
     /**
      * Handle an incoming request.
@@ -16,13 +15,12 @@ class isAdministrator
      */
     public function handle(Request $request, Closure $next): Response
     {
-
         $userRole = session('user_role');
 
-        if($userRole === 1) {
+        if($userRole === 5) {
             return $next($request);
         } else {
-            return back()->with('error', 'Akses ditolak. Anda bukan Administrator.');
+            return back()->with('error', 'Akses ditolak. Anda bukan Pemilik.');
         }
     }
 }

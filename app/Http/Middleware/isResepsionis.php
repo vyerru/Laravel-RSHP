@@ -15,6 +15,12 @@ class isResepsionis
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        $userRole = session('user_role');
+
+        if($userRole === 4) {
+            return $next($request);
+        } else {
+            return back()->with('error', 'Akses ditolak. Anda bukan Resepsionis.');
+        }
     }
 }
