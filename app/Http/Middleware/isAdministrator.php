@@ -16,6 +16,9 @@ class isAdministrator
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        }
 
         $userRole = session('user_role');
 

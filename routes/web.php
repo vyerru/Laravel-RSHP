@@ -14,6 +14,7 @@ use App\Http\Controllers\Site\SiteController;
 use App\Http\Controllers\Admin\DashboardAdminController;
 use App\Http\Middleware\isAdministrator;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Middleware\isResepsionis;
 
 Auth::routes();
 
@@ -45,7 +46,10 @@ Route::middleware(['auth', 'isAdministrator'])->group(function (){
 });
 
 Route::middleware(['auth', 'isResepsionis'])->group(function (){
-    Route::get('/resepsionis/dashboard', [App\Http\Controllers\Resepsionis\DashboardResepsionisController::class, 'index'])->name('Resepsionis.Dashboard.index');
+    Route::get('/resepsionis/dashboard', [App\Http\Controllers\Resepsionis\DashboardResepsionisController::class, 'index'])->name('resepsionis.dashboard');
+    Route::get('/resepsionis/registrasi-pemilik', [App\Http\Controllers\Resepsionis\RegistrasiPemilikController::class, 'index'])->name('resepsionis.registrasi.pemilik');
+    Route::get('/resepsionis/registrasi-pet', [App\Http\Controllers\Resepsionis\RegistrasiPetController::class, 'index'])->name('resepsionis.registrasi.pet');
+    Route::get('/resepsionis/temu-dokter', [App\Http\Controllers\Resepsionis\TemuDokterController::class, 'index'])->name('resepsionis.temu-dokter.index');
 });
 
 Route::middleware(['auth','dokter'])->group(function (){

@@ -5,16 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    {{-- Bootstrap Icons --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Scripts -->
+    {{-- Stack untuk CSS khusus dari halaman child --}}
+    @stack('styles')
+
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
@@ -23,7 +25,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    RSHP
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -32,53 +34,30 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    
-                    <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                        
-                        <!-- 
-                          ===============================================
-                          PERBAIKAN ADA DI BLOK @auth DI BAWAH INI
-                          ===============================================
-                        -->
                         @auth
-                            <!-- 1. Membersihkan data role (anti spasi & case-sensitive) -->
                             @php( $role = strtolower(trim(Auth::user()->role)) )
-
-                            <!-- 2. Cek role yang sudah bersih -->
                             @if ($role == 'dokter')
-                                <!-- 3. Memanggil file partial dengan underscore '_' -->
-                                @include('layouts.partials._menu_dokter')
-
-                            <!-- @elseif ($role == 'admin')
-                                @include('layouts.partials._menu_admin') -->
-
-                            <li class="nav-item"><a class="nav-link" href="#">TES MENU ADMIN</a></li>
-
+                                @include('layouts.partials.menu_dokter')
+                            @elseif ($role == 'administrator')
+                                @include('layouts.partials.menu_admin')
                             @elseif ($role == 'resepsionis')
-                                @include('layouts.partials._menu_resepsionis')
-
+                                @include('layouts.partials.menu_resepsionis')
                             @elseif ($role == 'perawat')
-                                @include('layouts.partials._menu_perawat')
-
+                                @include('layouts.partials.menu_perawat')
                             @elseif ($role == 'pemilik')
-                                @include('layouts.partials._menu_pemilik')
+                                @include('layouts.partials.menu_pemilik')
                             @endif
                         @endauth
-                        <!-- =============================================== -->
-
                     </ul>
 
-                    <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
-
                             @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
@@ -90,13 +69,11 @@
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
-
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                              document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -113,5 +90,4 @@
         </main>
     </div>
 </body>
-
 </html>

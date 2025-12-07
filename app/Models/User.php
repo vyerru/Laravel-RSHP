@@ -53,27 +53,24 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: function () {
-                // 1. Mengambil model perantara (pivot) yang pertama
-                //    (Ini memanggil relasi 'roleUser()' Anda)
+                // 1. Mengambil model pivot (RoleUser)
                 $roleUserPivot = $this->roleUser->first(); 
                 
-                // 2. Jika user tidak punya role sama sekali
+                // 2. Jika user tidak punya role
                 if (!$roleUserPivot) {
                     return null;
                 }
 
-                // 3. [ASUMSI 1]
-                //    Kita mengambil model 'Role' DARI model 'RoleUser'.
-                //    Ini mengasumsikan model 'RoleUser' Anda punya relasi bernama 'role'
+                // 3. Mengambil model Role DARI pivot
+                //    (Ini memanggil relasi 'role()' di RoleUser.php)
                 $roleModel = $roleUserPivot->role; 
                 
                 if (!$roleModel) {
-                    return null; // Ada pivot tapi tidak terhubung ke role?
+                    return null; 
                 }
 
-                // 4. [ASUMSI 2]
-                //    Ambil nama role dari model 'Role'
-                //    Ganti 'name' dengan nama kolom yang benar (misal: 'nama_role')
+                // 4. Ambil nama role dari model Role
+                //    (Kolom di tabel 'role' Anda adalah 'role')
                 return $roleModel->nama_role; 
             },
         );
@@ -88,4 +85,13 @@ class User extends Authenticatable
         return $this->hasMany(RoleUser::class, 'iduser', 'iduser');
     }
 
+    public function perawat() {
+        return $this->hasOne(
+            Perawat::class, 'iduser', 'iduser');
+    }
+
+    public function dokter() {
+        return $this->hasOne(
+            Dokter::class, 'iduser', 'iduser');
+    }
 }

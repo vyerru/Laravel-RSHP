@@ -10,9 +10,9 @@
     </a>
     <!-- Pastikan <ul> ini ditutup dengan </ul> -->
     <ul class="dropdown-menu"> 
-        <li><a class="dropdown-item" href="{{ route('Admin.data-user.index') }}">Data User</a></li>
-        <li><a class="dropdown-item" href="{{ route('Admin.manajemen-role.index') }}">Manajemen Role</a></li>
+        <li><a class="dropdown-item" href="{{ route('Admin.RoleUser.index') }}">Data User</a></li>
+        <li><a class="dropdown-item" href="{{ route('Admin.Role.index') }}">Manajemen Role</a></li>
         <li><a class="dropdown-item" href="{{ route('Admin.jenis-hewan.index') }}">Jenis Hewan</a></li>
-        <li><a class="dropdown-item" href="{{ route('Admin.ras-hewan.index') }}">Ras Hewan</a></li>
+        <li><a class="dropdown-item" href="{{ route('Admin.RasHewan.index') }}">Ras Hewan</a></li>
     </ul>
 </li>

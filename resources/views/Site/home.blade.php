@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RSHP Unair - Rumah Sakit Hewan Pendidikan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../css/style.css" rel="stylesheet">
+    {{-- Menggunakan asset() untuk memuat CSS dari folder public --}}
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
@@ -18,18 +20,59 @@
       </button>
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Layanan</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ route('index') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url('/layanan') }}">Layanan</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Tentang</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+          
+          {{-- LOGIKA DINAMIS DIMULAI DI SINI --}}
+          @guest
+            {{-- Tampilkan ini HANYA jika pengguna BELUM login --}}
+            <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+          @else
+            {{-- Tampilkan ini HANYA jika pengguna SUDAH login --}}
+            
+            {{-- Ambil role dan ubah ke huruf kecil --}}
+            @php( $role = strtolower(trim(Auth::user()->role)) )
+
+            {{-- Arahkan ke dashboard yang sesuai --}}
+            @if ($role == 'admin')
+                <li class="nav-item"><a class="nav-link" href="{{ route('Admin.dashboard') }}">Dashboard</a></li>
+            @elseif ($role == 'dokter')
+                <li class="nav-item"><a class="nav-link" href="{{ route(name: 'Dokter.Dashboard.index') }}">Dashboard</a></li>
+            @elseif ($role == 'resepsionis')
+                <li class="nav-item"><a class="nav-link" href="{{ route('resepsionis.dashboard') }}">Dashboard</a></li>
+            @elseif ($role == 'perawat')
+                <li class="nav-item"><a class="nav-link" href="{{ route('Perawat.Dashboard.index') }}">Dashboard</a></li>
+            @elseif ($role == 'pemilik')
+                <li class="nav-item"><a class="nav-link" href="{{ route('Pemilik.Dashboard.index') }}">Dashboard</a></li>
+            @else
+                {{-- Fallback jika role tidak dikenal --}}
+                <li class="nav-item"><a class="nav-link" href="/home">Dashboard</a></li>
+            @endif
+
+            {{-- Tambahkan tombol Logout --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();
+                                 document.getElementById('logout-form-public').submit();">
+                    Logout
+                </a>
+                <form id="logout-form-public" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </li>
+          @endguest
+          {{-- LOGIKA DINAMIS SELESAI --}}
+
         </ul>
       </div>
     </div>
   </nav>
 
-  <header class="py-2 my-2">
+  <header class="py-2 my-2" style="margin-top: 56px;"> {{-- Menambahkan margin-top agar tidak tertutup navbar --}}
     <div class="container">
-      <img src="Css\Gambar\Header RSHP.webp" class="img-fluid w-100 rounded shadow" alt="RSHP Header Image">
+      {{-- Ganti path gambar menggunakan asset() --}}
+      <img src="{{ asset('Css/Gambar/Header RSHP.webp') }}" class="img-fluid w-100 rounded shadow" alt="RSHP Header Image">
     </div>
   </header>
 
@@ -52,7 +95,12 @@
             kesayangan.
           </p>
           <div class="text-center mt-3">
-            <a href={{ route('login') }} class="btn btn-primary">Daftar Online Sekarang</a>
+            {{-- Logika dinamis untuk tombol daftar --}}
+            @guest
+                <a href="{{ route('login') }}" class="btn btn-primary">Daftar Online Sekarang</a>
+            @else
+                <a href="#" class="btn btn-secondary disabled">Anda sudah login</a>
+            @endguest
           </div>
         </div>
       </div>
@@ -64,6 +112,8 @@
         <div class="row g-4">
           <div class="col-md-6 col-lg-4">
             <div class="card h-100">
+              {{-- Ganti path gambar menggunakan asset() --}}
+              <img src="{{ asset('Css/Gambar/open_recruit.png') }}" class="card-img-top" alt="Rekrutmen Staf">
               <div class="card-body">
                 <h5 class="card-title">Open Recruit Staf RSHP Unair</h5>
                 <p class="card-text text-muted"><small>1 June 2025</small></p>
@@ -77,6 +127,7 @@
           </div>
           <div class="col-md-6 col-lg-4">
             <div class="card h-100">
+              <img src="{{ asset('Css/Gambar/senam_juara.jpg') }}" class="card-img-top" alt="Tim Satu Sehat">
               <div class="card-body">
                 <h5 class="card-title">Tim Satu Sehat, Juara 1 Senam Bugar Airlangga</h5>
                 <p class="card-text text-muted"><small>4 November 2024</small></p>
@@ -90,6 +141,7 @@
           </div>
           <div class="col-md-6 col-lg-4">
             <div class="card h-100">
+              <img src="{{ asset('Css/Gambar/seminar_workshop.webp') }}" class="card-img-top" alt="Workshop Sitologi">
               <div class="card-body">
                 <h5 class="card-title">Seminar & Workshop Sitologi RSHP 2024</h5>
                 <p class="card-text text-muted"><small>27 August 2024</small></p>
@@ -113,6 +165,7 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
