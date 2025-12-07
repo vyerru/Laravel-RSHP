@@ -31,35 +31,75 @@ Route::get('/cek-koneksi', [SiteController::class, 'cekKoneksi'])->name('Site.ce
 
 // Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::middleware(['auth', 'isAdministrator'])->group(function (){
+Route::middleware(['auth', 'isAdministrator'])->group(function () {
     Route::get('/admin/data-master', [DashboardAdminController::class, 'dataMaster'])->name('admin/data-master');
     Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('Admin.dashboard');
-    Route::get('/admin/jenis-hewan', [JenisHewanController::class, 'index'])->name('Admin.jenis-hewan.index');
-    Route::get('/admin/pemilik', [PemilikController::class, 'index'])->name('Admin.Pemilik.index');
-    Route::get('/admin/role-user', [RoleUserController::class, 'index'])->name('Admin.RoleUser.index');
-    Route::get('/admin/role', [RoleController::class, 'index'])->name('Admin.Role.index');
+    Route::prefix('admin/jenis-hewan')->name('Admin.jenis-hewan.')->group(function () {
+        Route::get('/', [JenisHewanController::class, 'index'])->name('index');
+        Route::post('/', [JenisHewanController::class, 'store'])->name('store');
+        Route::put('/{id}', [JenisHewanController::class, 'update'])->name('update');
+        Route::delete('/{id}', [JenisHewanController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('admin/pemilik')->name('Admin.Pemilik.')->group(function () {
+        Route::get('/', [PemilikController::class, 'index'])->name('index');
+        Route::post('/', [PemilikController::class, 'store'])->name('store');
+        Route::put('/{id}', [PemilikController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PemilikController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('admin/role-user')->name('Admin.RoleUser.')->group(function () {
+        Route::get('/', [RoleUserController::class, 'index'])->name('index');
+        Route::post('/', [RoleUserController::class, 'store'])->name('store');
+        Route::put('/{id}', [RoleUserController::class, 'update'])->name('update'); // ID yang dikirim adalah ID RoleUser
+        Route::delete('/{id}', [RoleUserController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('admin/role')->name('Admin.Role.')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('index');
+        Route::post('/', [RoleController::class, 'store'])->name('store');
+        Route::put('/{id}', [RoleController::class, 'update'])->name('update');
+        Route::delete('/{id}', [RoleController::class, 'destroy'])->name('destroy');
+    });
     Route::get('/admin/pet', [PetController::class, 'index'])->name('Admin.Pet.index');
-    Route::get('/admin/kategori', [KategoriController::class, 'index'])->name('Admin.Kategori.index');
-    Route::get('admin/kategori-klinis', [KategoriKlinisController::class, 'index'])->name('Admin.KategoriKlinis.index');
-    Route::get('admin/kode-tindakan', [KodeTindakanController::class, 'index'])->name('Admin.KodeTindakan.index');
-    Route::get('admin/ras-hewan', [RasHewanController::class, 'index'])->name('Admin.RasHewan.index');
+    Route::prefix('admin/kategori')->name('Admin.Kategori.')->group(function () {
+        Route::get('/', [KategoriController::class, 'index'])->name('index');
+        Route::post('/', [KategoriController::class, 'store'])->name('store');
+        Route::post('/{id}', [KategoriController::class, 'update'])->name('update');
+        Route::delete('/{id}', [KategoriController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('admin/kategori-klinis')->name('Admin.KategoriKlinis.')->group(function () {
+        Route::get('/', [KategoriKlinisController::class, 'index'])->name('index');
+        Route::post('/', [KategoriKlinisController::class, 'store'])->name('store');
+        Route::put('/{id}', [KategoriKlinisController::class, 'update'])->name('update');
+        Route::delete('/{id}', [KategoriKlinisController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('admin/kode-tindakan')->name('Admin.KodeTindakan.')->group(function () {
+        Route::get('/', [KodeTindakanController::class, 'index'])->name('index');
+        Route::post('/', [KodeTindakanController::class, 'store'])->name('store');
+        Route::put('/{id}', [KodeTindakanController::class, 'update'])->name('update');
+        Route::delete('/{id}', [KodeTindakanController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('admin/ras-hewan')->name('Admin.RasHewan.')->group(function () {
+        Route::get('/', [RasHewanController::class, 'index'])->name('index');
+        Route::post('/', [RasHewanController::class, 'store'])->name('store');
+        Route::put('/{id}', [RasHewanController::class, 'update'])->name('update');
+        Route::delete('/{id}', [RasHewanController::class, 'destroy'])->name('destroy');
+    });
 });
 
-Route::middleware(['auth', 'isResepsionis'])->group(function (){
+Route::middleware(['auth', 'isResepsionis'])->group(function () {
     Route::get('/resepsionis/dashboard', [App\Http\Controllers\Resepsionis\DashboardResepsionisController::class, 'index'])->name('resepsionis.dashboard');
     Route::get('/resepsionis/registrasi-pemilik', [App\Http\Controllers\Resepsionis\RegistrasiPemilikController::class, 'index'])->name('resepsionis.registrasi.pemilik');
     Route::get('/resepsionis/registrasi-pet', [App\Http\Controllers\Resepsionis\RegistrasiPetController::class, 'index'])->name('resepsionis.registrasi.pet');
     Route::get('/resepsionis/temu-dokter', [App\Http\Controllers\Resepsionis\TemuDokterController::class, 'index'])->name('resepsionis.temu-dokter.index');
 });
 
-Route::middleware(['auth','dokter'])->group(function (){
+Route::middleware(['auth', 'dokter'])->group(function () {
     Route::get('/dokter/dashboard', [App\Http\Controllers\Dokter\DashboardDokterController::class, 'index'])->name('Dokter.Dashboard.index');
 });
 
-Route::middleware(['auth', 'pemilik'])->group(function (){
+Route::middleware(['auth', 'pemilik'])->group(function () {
     Route::get('/pemilik/dashboard', [App\Http\Controllers\Pemilik\DashboardPemilikController::class, 'index'])->name('Pemilik.Dashboard.index');
 });
 
-Route::middleware(['auth','perawat'])->group(function (){
+Route::middleware(['auth', 'perawat'])->group(function () {
     Route::get('/perawat/dashboard', [App\Http\Controllers\Perawat\DashboardPerawatController::class, 'index'])->name('Perawat.Dashboard.index');
 });

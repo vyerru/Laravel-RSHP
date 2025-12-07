@@ -8,7 +8,7 @@ class RoleUser extends Model
 {
     protected $table = "role_user";
     protected $primaryKey = "idrole_user";
-    protected $fillable = ['status'];
+    protected $fillable = ['idrole', 'iduser'];
     public $timestamps = false;
 
     public function getStatusLabelAttribute(): string
