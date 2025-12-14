@@ -1,20 +1,14 @@
 <li class="nav-item">
-    <a class="nav-link" href="{{ route('resepsionis.dashboard') }}">
-        <i class="bi bi-house-door me-1"></i>Dashboard
+    <a class="nav-link {{ request()->routeIs('Resepsionis.Dashboard.index') ? 'active' : '' }}" 
+       href="{{ route('Resepsionis.Dashboard.index') }}">
+        <i class="bi bi-speedometer2 me-1"></i> Dashboard
     </a>
 </li>
+
 <li class="nav-item">
-    <a class="nav-link" href="{{ route('resepsionis.registrasi.pemilik') }}">
-        <i class="bi bi-person-plus me-1"></i>Registrasi Pemilik
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="{{ route('resepsionis.registrasi.pet') }}">
-        <i class="bi bi-heart me-1"></i>Registrasi Pet
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="{{ route('resepsionis.temu-dokter.index') }}">
-        <i class="bi bi-calendar-check me-1"></i>Temu Dokter
+    {{-- Menggunakan wildcard (*) agar menu tetap aktif saat membuka halaman Detail Pemilik --}}
+    <a class="nav-link {{ request()->routeIs('Resepsionis.Pemilik.*') ? 'active' : '' }}" 
+       href="{{ route('Resepsionis.Pemilik.index') }}">
+        <i class="bi bi-people-fill me-1"></i> Pasien & Pemilik
     </a>
 </li>

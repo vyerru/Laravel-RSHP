@@ -40,7 +40,7 @@
             @elseif ($role == 'dokter')
                 <li class="nav-item"><a class="nav-link" href="{{ route(name: 'Dokter.Dashboard.index') }}">Dashboard</a></li>
             @elseif ($role == 'resepsionis')
-                <li class="nav-item"><a class="nav-link" href="{{ route('resepsionis.dashboard') }}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('Resepsionis.Dashboard.index') }}">Dashboard</a></li>
             @elseif ($role == 'perawat')
                 <li class="nav-item"><a class="nav-link" href="{{ route('Perawat.Dashboard.index') }}">Dashboard</a></li>
             @elseif ($role == 'pemilik')

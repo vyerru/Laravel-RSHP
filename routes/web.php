@@ -106,10 +106,29 @@ Route::middleware(['auth', 'isAdministrator'])->group(function () {
 });
 
 Route::middleware(['auth', 'isResepsionis'])->group(function () {
-    Route::get('/resepsionis/dashboard', [App\Http\Controllers\Resepsionis\DashboardResepsionisController::class, 'index'])->name('resepsionis.dashboard');
-    Route::get('/resepsionis/registrasi-pemilik', [App\Http\Controllers\Resepsionis\RegistrasiPemilikController::class, 'index'])->name('resepsionis.registrasi.pemilik');
-    Route::get('/resepsionis/registrasi-pet', [App\Http\Controllers\Resepsionis\RegistrasiPetController::class, 'index'])->name('resepsionis.registrasi.pet');
-    Route::get('/resepsionis/temu-dokter', [App\Http\Controllers\Resepsionis\TemuDokterController::class, 'index'])->name('resepsionis.temu-dokter.index');
+    
+    // 1. Dashboard
+    Route::get('/resepsionis/dashboard', [App\Http\Controllers\Resepsionis\DashboardResepsionisController::class, 'index'])->name('Resepsionis.Dashboard.index');
+
+    // 2. Manajemen Pemilik (Registrasi Pemilik Baru)
+    Route::prefix('resepsionis/pemilik')->name('Resepsionis.Pemilik.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Resepsionis\PemilikController::class, 'index'])->name('index');
+        Route::post('/store', [App\Http\Controllers\Resepsionis\PemilikController::class, 'store'])->name('store');
+        Route::put('/update/{id}', [App\Http\Controllers\Resepsionis\PemilikController::class, 'update'])->name('update');
+        // Detail Pemilik (Untuk tambah hewan nanti)
+        Route::get('/{id}', [App\Http\Controllers\Resepsionis\PemilikController::class, 'show'])->name('show');
+    });
+
+    // 3. Manajemen Hewan (CRUD Pet)
+    Route::prefix('resepsionis/pet')->name('Resepsionis.Pet.')->group(function () {
+        Route::post('/store', [App\Http\Controllers\Resepsionis\PetController::class, 'store'])->name('store');
+        Route::put('/update/{id}', [App\Http\Controllers\Resepsionis\PetController::class, 'update'])->name('update');
+    });
+
+    // 4. Pendaftaran Temu Dokter (Appointment)
+    Route::prefix('resepsionis/pendaftaran')->name('Resepsionis.TemuDokter.')->group(function () {
+        Route::post('/store', [App\Http\Controllers\Resepsionis\TemuDokterController::class, 'store'])->name('store');
+    });
 });
 
 Route::middleware(['auth', 'dokter'])->group(function () {

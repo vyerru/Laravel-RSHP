@@ -13,6 +13,8 @@ class Pet extends Model
     protected $primaryKey = 'idpet';
     protected $fillable = ['nama', 'tanggal_lahir', 'warna_tanda', 'jenis_kelamin', 'idpemilik', 'idras_hewan', 'deleted_by'];
 
+    public $timestamps = false;
+
     public function pemilik() { return $this->belongsTo(Pemilik::class, 'idpemilik', 'idpemilik'); }
     public function rasHewan() { return $this->belongsTo(RasHewan::class, 'idras_hewan', 'idras_hewan'); }
     
