@@ -9,12 +9,12 @@
     </a>
 </li>
 <li class="nav-item">
-    {{-- <a class="nav-link {{ Route::is('Dokter.RekamMedis.*') ? 'active fw-bold text-primary' : '' }}" href="{{ route('Dokter.RekamMedis.index') }}"></a>- --}}
+    <a class="nav-link {{ Route::is('Dokter.RekamMedis.*') ? 'active fw-bold text-primary' : '' }}" href="{{ route('Dokter.RekamMedis.index') }}"></a>
         <i class="bi bi-file-medical me-1"></i> Rekam Medis
     </a>
 </li>
 <li class="nav-item">
-    {{-- <a class="nav-link {{ Route::is('Dokter.Profil.*') ? 'active fw-bold text-primary' : '' }}" href="{{ route('Dokter.Profil.index') }}"></a>- --}}
+    <a class="nav-link {{ Route::is('Dokter.Profil.*') ? 'active fw-bold text-primary' : '' }}" href="{{ route('Dokter.Profil.index') }}"></a>
         <i class="bi bi-person-badge me-1"></i> Profil Saya
     </a>
 </li>

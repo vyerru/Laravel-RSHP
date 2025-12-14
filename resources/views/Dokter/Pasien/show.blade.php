@@ -136,7 +136,7 @@
                                 
                                 {{-- Tombol Detail Tindakan (Nanti diarahkan ke fitur Detail Rekam Medis) --}}
                                 <div class="mt-3 text-end">
-                                    <button class="btn btn-sm btn-outline-secondary" disabled>Lihat Resep & Tindakan (Segera)</button>
+                                    <a href="{{ route('Dokter.Pemeriksaan.edit', $rm->idreservasi_dokter) }}"></a><button class="btn btn-sm btn-outline-secondary">Lihat Resep & Tindakan</button>
                                 </div>
                             </div>
                         </div>

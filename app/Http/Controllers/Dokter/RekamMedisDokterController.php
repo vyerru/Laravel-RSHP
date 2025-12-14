@@ -13,84 +13,86 @@ use App\Models\RoleUser;
 
 class RekamMedisDokterController extends Controller
 {
-    /**
-     * Halaman Periksa Dokter
-     * Menampilkan data dari Perawat & Form CRUD Detail
-     */
+    // 1. List Riwayat Pemeriksaan Saya
+    public function index()
+    {
+        $dokterId = RoleUser::where('iduser', Auth::id())->where('idrole', 2)->value('idrole_user');
+
+        $rekamMedis = RekamMedis::with(['reservasi.pet.pemilik.user', 'reservasi.pet.rasHewan'])
+            ->where('dokter_pemeriksa', $dokterId)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('Dokter.RekamMedis.index', compact('rekamMedis'));
+    }
+
+    // 2. Halaman Form Periksa (Edit Data Perawat)
     public function edit($id_reservasi)
     {
-        // 1. Ambil Reservasi
         $reservasi = TemuDokter::with(['pet.pemilik.user', 'pet.rasHewan'])->findOrFail($id_reservasi);
 
-        // 2. Ambil Rekam Medis (Yang dibuat Perawat)
-        // Jika belum ada (Perawat lupa), buatkan dummy/kosong agar tidak error
+        // --- PERBAIKAN DI SINI ---
+        // Ambil ID Dokter dari data Reservasi agar tidak error "Column cannot be null"
+        $dokterId = $reservasi->idrole_user; 
+
+        // Gunakan firstOrCreate dengan data default yang lengkap
         $rekamMedis = RekamMedis::firstOrCreate(
             ['idreservasi_dokter' => $id_reservasi],
-            ['dokter_pemeriksa' => null] // Nanti diupdate saat dokter simpan diagnosa
+            [
+                'dokter_pemeriksa' => $dokterId, // Isi dengan dokter yang dituju
+                
+                // Kita isi strip (-) untuk jaga-jaga jika kolom ini juga NOT NULL di database Anda
+                'anamnesa' => '-', 
+                'temuan_klinis' => '-',
+                'diagnosa' => 'Belum diisi dokter' 
+            ] 
         );
+        // -------------------------
 
-        // 3. Ambil Daftar Tindakan/Terapi (Untuk Dropdown)
-        $tindakanList = KodeTindakanTerapi::orderBy('nama_tindakan', 'asc')->get();
+        // Update status reservasi jadi 'Diperiksa' (1)
+        if ($reservasi->status == '0') {
+            $reservasi->update(['status' => '1']);
+        }
 
-        // 4. Ambil Detail Tindakan yang SUDAH diinput (Untuk Tabel List)
-        $detailTindakan = DetailRekamMedis::with('tindakan')
-            ->where('idrekam_medis', $rekamMedis->idrekam_medis)
-            ->get();
+        $tindakanList = KodeTindakanTerapi::orderBy('deskripsi_tindakan_terapi', 'asc')->get();
+        $detailTindakan = DetailRekamMedis::with('tindakan')->where('idrekam_medis', $rekamMedis->idrekam_medis)->get();
 
         return view('Dokter.RekamMedis.edit', compact('reservasi', 'rekamMedis', 'tindakanList', 'detailTindakan'));
     }
 
-    /**
-     * UPDATE DIAGNOSA (Parent)
-     */
-    public function updateDiagnosa(Request $request, $id_rekam_medis)
+    // 3. Simpan Diagnosa & Selesai
+    public function updateDiagnosa(Request $request, $id)
     {
         $request->validate(['diagnosa' => 'required']);
-
-        // Ambil ID Dokter Login
         $dokterId = RoleUser::where('iduser', Auth::id())->where('idrole', 2)->value('idrole_user');
 
-        $rm = RekamMedis::findOrFail($id_rekam_medis);
+        $rm = RekamMedis::findOrFail($id);
         $rm->update([
             'diagnosa' => $request->diagnosa,
-            'dokter_pemeriksa' => $dokterId, // Update dokter pemeriksa jadi dokter ini
+            'dokter_pemeriksa' => $dokterId,
         ]);
 
-        // Update status reservasi jadi Selesai
-        TemuDokter::where('idreservasi_dokter', $rm->idreservasi_dokter)
-            ->update(['status' => '2']);
+        TemuDokter::where('idreservasi_dokter', $rm->idreservasi_dokter)->update(['status' => '2']); // Selesai
 
-        return redirect()->route('Dokter.Dashboard.index')
-            ->with('success', 'Pemeriksaan Selesai.');
+        return redirect()->route('Dokter.Dashboard.index')->with('success', 'Pemeriksaan Selesai.');
     }
 
-    /**
-     * CREATE DETAIL (Menambah Tindakan)
-     */
+    // 4. Tambah Detail Tindakan
     public function storeDetail(Request $request)
     {
         $request->validate([
             'idrekam_medis' => 'required',
-            'idkode_tindakan_terapi' => 'required|exists:kode_tindakan_terapi,idkode_tindakan_terapi',
+            'idkode_tindakan_terapi' => 'required',
         ]);
 
-        DetailRekamMedis::create([
-            'idrekam_medis' => $request->idrekam_medis,
-            'idkode_tindakan_terapi' => $request->idkode_tindakan_terapi,
-            'detail' => $request->detail, // Catatan tambahan (opsional)
-        ]);
-
-        return redirect()->back()->with('success', 'Tindakan berhasil ditambahkan.');
+        DetailRekamMedis::create($request->all());
+        return redirect()->back()->with('success', 'Tindakan ditambahkan.');
     }
 
-    /**
-     * DELETE DETAIL (Menghapus Tindakan)
-     */
+    // 5. Hapus Detail Tindakan
     public function destroyDetail($id)
     {
-        $detail = DetailRekamMedis::findOrFail($id);
-        $detail->delete();
-
+        DetailRekamMedis::findOrFail($id)->delete();
         return redirect()->back()->with('success', 'Tindakan dihapus.');
     }
 }

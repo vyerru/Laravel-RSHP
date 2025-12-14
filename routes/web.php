@@ -113,23 +113,38 @@ Route::middleware(['auth', 'isResepsionis'])->group(function () {
 });
 
 Route::middleware(['auth', 'dokter'])->group(function () {
+
+    // 1. Dashboard Dokter
     Route::get('/dokter/dashboard', [App\Http\Controllers\Dokter\DashboardDokterController::class, 'index'])->name('Dokter.Dashboard.index');
+
+    // 2. Data Pasien (Read Only)
     Route::prefix('dokter/pasien')->name('Dokter.Pasien.')->group(function () {
         Route::get('/', [App\Http\Controllers\Dokter\PasienDokterController::class, 'index'])->name('index');
         Route::get('/{id}', [App\Http\Controllers\Dokter\PasienDokterController::class, 'show'])->name('show');
     });
-    Route::prefix('dokter/pemeriksaan')->name('Dokter.RekamMedis.')->group(function () {
+
+    // 3. Riwayat Pemeriksaan Saya (List History)
+    Route::prefix('dokter/rekam-medis')->name('Dokter.RekamMedis.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Dokter\RekamMedisDokterController::class, 'index'])->name('index');
+    });
+
+    // 4. Proses Pemeriksaan (Input Diagnosa & Tindakan)
+    Route::prefix('dokter/pemeriksaan')->name('Dokter.Pemeriksaan.')->group(function () {
+        // Halaman Form Periksa
         Route::get('/{id_reservasi}', [App\Http\Controllers\Dokter\RekamMedisDokterController::class, 'edit'])->name('edit');
+
+        // Simpan Diagnosa Utama (Update)
         Route::put('/update-diagnosa/{id}', [App\Http\Controllers\Dokter\RekamMedisDokterController::class, 'updateDiagnosa'])->name('updateDiagnosa');
+
+        // CRUD Detail Tindakan (Child)
         Route::post('/detail/store', [App\Http\Controllers\Dokter\RekamMedisDokterController::class, 'storeDetail'])->name('storeDetail');
         Route::delete('/detail/{id}', [App\Http\Controllers\Dokter\RekamMedisDokterController::class, 'destroyDetail'])->name('destroyDetail');
     });
-    Route::get('/dokter/rekam-medis', function () {
-        return "Halaman Rekam Medis";
-    })->name('Dokter.RekamMedis.index');
-    Route::get('/dokter/profil', function () {
-        return "Halaman Profil Dokter";
-    })->name('Dokter.Profil.index');
+
+    // Placeholder Profil (Nanti dibuat terpisah)
+    Route::prefix('dokter/profil')->name('Dokter.Profil.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Dokter\ProfilDokterController::class, 'index'])->name('index');
+    });
 });
 
 Route::middleware(['auth', 'pemilik'])->group(function () {

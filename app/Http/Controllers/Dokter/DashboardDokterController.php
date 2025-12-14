@@ -14,42 +14,23 @@ class DashboardDokterController extends Controller
 {
     public function index()
     {
-        // 1. Ambil ID RoleUser untuk Dokter yang sedang login
-        // Kita cari data di tabel role_user dimana iduser = Auth::id() DAN idrole = 2 (Dokter)
-        $dokter = RoleUser::where('iduser', Auth::id())
-                    ->where('idrole', 2) // Asumsi ID Role 2 = Dokter
-                    ->first();
-
-        // Cek validasi (Jaga-jaga jika user login tapi datanya ga ada di role_user)
-        if (!$dokter) {
-            abort(403, 'Data profil dokter tidak ditemukan.');
-        }
+        $dokter = RoleUser::where('iduser', Auth::id())->where('idrole', 2)->first();
+        if (!$dokter) abort(403, 'Data dokter tidak ditemukan.');
 
         $hariIni = Carbon::today();
 
-        // 2. Hitung Statistik (Real Data)
         $stats = [
-            // Jumlah pasien yang mendaftar ke dokter ini HARI INI
-            'pasien_hari_ini' => TemuDokter::where('idrole_user', $dokter->idrole_user)
-                                    ->whereDate('waktu_daftar', $hariIni)
-                                    ->count(),
-
-            // Total rekam medis yang pernah dibuat dokter ini (sepanjang waktu)
-            'total_rekam_medis' => RekamMedis::where('dokter_pemeriksa', $dokter->idrole_user)
-                                    ->count(),
-
-            // Jadwal Aktif: Pasien hari ini yang statusnya BELUM Selesai (0=Menunggu, 1=Diperiksa)
+            'pasien_hari_ini' => TemuDokter::where('idrole_user', $dokter->idrole_user)->whereDate('waktu_daftar', $hariIni)->count(),
+            'total_rekam_medis' => RekamMedis::where('dokter_pemeriksa', $dokter->idrole_user)->count(),
             'jadwal_aktif' => TemuDokter::where('idrole_user', $dokter->idrole_user)
-                                    ->whereDate('waktu_daftar', $hariIni)
-                                    ->whereIn('status', ['0', '1'])
-                                    ->count()
+                                ->whereDate('waktu_daftar', $hariIni)
+                                ->whereIn('status', ['0', '1'])->count()
         ];
 
-        // 3. Ambil Daftar Antrian Pasien Hari Ini
-        $pasienHariIni = TemuDokter::with(['pet.pemilik.user', 'pet.rasHewan']) // Load relasi
+        $pasienHariIni = TemuDokter::with(['pet.pemilik.user', 'pet.rasHewan'])
                             ->where('idrole_user', $dokter->idrole_user)
                             ->whereDate('waktu_daftar', $hariIni)
-                            ->orderBy('no_urut', 'asc') // Urutkan berdasarkan nomor antrian/jam
+                            ->orderBy('no_urut', 'asc')
                             ->get();
 
         return view('Dokter.dashboard', compact('stats', 'pasienHariIni'));
