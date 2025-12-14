@@ -7,8 +7,10 @@ use App\Http\Controllers\Admin\KodeTindakanController;
 use App\Http\Controllers\Admin\PemilikController;
 use App\Http\Controllers\Admin\PetController;
 use App\Http\Controllers\Admin\RasHewanController;
+use App\Http\Controllers\Admin\RekamMedisController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RoleUserController;
+use App\Http\Controllers\Admin\TemuDokterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site\SiteController;
 use App\Http\Controllers\Admin\DashboardAdminController;
@@ -62,7 +64,7 @@ Route::middleware(['auth', 'isAdministrator'])->group(function () {
     Route::prefix('admin/kategori')->name('Admin.Kategori.')->group(function () {
         Route::get('/', [KategoriController::class, 'index'])->name('index');
         Route::post('/', [KategoriController::class, 'store'])->name('store');
-        Route::post('/{id}', [KategoriController::class, 'update'])->name('update');
+        Route::put('/{id}', [KategoriController::class, 'update'])->name('update');
         Route::delete('/{id}', [KategoriController::class, 'destroy'])->name('destroy');
     });
     Route::prefix('admin/kategori-klinis')->name('Admin.KategoriKlinis.')->group(function () {
@@ -82,6 +84,24 @@ Route::middleware(['auth', 'isAdministrator'])->group(function () {
         Route::post('/', [RasHewanController::class, 'store'])->name('store');
         Route::put('/{id}', [RasHewanController::class, 'update'])->name('update');
         Route::delete('/{id}', [RasHewanController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('admin/pet')->name('Admin.Pet.')->group(function () {
+        Route::get('/', [PetController::class, 'index'])->name('index');
+        Route::post('/', [PetController::class, 'store'])->name('store');
+        Route::put('/{id}', [PetController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PetController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('admin/reservasi')->name('Admin.TemuDokter.')->group(function () {
+        Route::get('/', [TemuDokterController::class, 'index'])->name('index');
+        Route::post('/', [TemuDokterController::class, 'store'])->name('store');
+        Route::put('/{id}', [TemuDokterController::class, 'update'])->name('update');
+        Route::delete('/{id}', [TemuDokterController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('admin/rekam-medis')->name('Admin.RekamMedis.')->group(function () {
+        Route::get('/', [RekamMedisController::class, 'index'])->name('index');
+        Route::post('/', [RekamMedisController::class, 'store'])->name('store');
+        Route::put('/{id}', [RekamMedisController::class, 'update'])->name('update');
+        Route::delete('/{id}', [RekamMedisController::class, 'destroy'])->name('destroy');
     });
 });
 

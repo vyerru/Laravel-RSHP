@@ -18,5 +18,16 @@ class KategoriKlinis extends Model
             KodeTindakanTerapi::class, 'idkategori_klinis', 'idkategori_klinis');
     }
 
+    protected static function booted()
+    {
+        static::deleted(function ($kategori) {
+            $kategori->kodeTindakan()->each(function($kode) {
+                $kode->delete();
+            });
+        });
 
+        static::restored(function ($kategori) {
+            $kategori->kodeTindakan()->withTrashed()->restore();
+        });
+    }
 }

@@ -52,6 +52,36 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function booted() {
+        static::deleted(function ($user) {
+            // 1. Hapus data RoleUser (status hak akses)
+            $user->roleUser()->each(function($roleUser) {
+                $roleUser->delete();
+            });
+
+            // 2. Hapus data Pemilik (jika ada)
+            if ($user->pemilik) {
+                $user->pemilik->delete();
+            }
+
+            // 3. Hapus data Dokter (jika ada)
+            if ($user->dokter) {
+                $user->dokter->delete();
+            }
+
+            // 4. Hapus data Perawat (jika ada)
+            if ($user->perawat) {
+                $user->perawat->delete();
+            }
+        });
+
+        static::restored(function ($user) {
+            $user->roleUser()->withTrashed()->restore();
+            if ($user->pemilik()->withTrashed()->first()) $user->pemilik()->withTrashed()->restore();
+            if ($user->dokter()->withTrashed()->first()) $user->dokter()->withTrashed()->restore();
+        });
+    }
+
     protected function role(): Attribute
     {
         return Attribute::make(

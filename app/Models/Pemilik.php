@@ -26,4 +26,22 @@ class Pemilik extends Model
     {
         return $this->belongsTo(User::class, 'iduser', 'iduser');
     }
+
+    public function pet() 
+    {
+        return $this->hasMany(Pet::class, 'idpemilik', 'idpemilik');
+    }
+
+    protected static function booted()
+    {
+        static::deleted(function ($pemilik) {
+            $pemilik->pet()->each(function($p) {
+                $p->delete();
+            });
+        });
+
+        static::restored(function ($pemilik) {
+            $pemilik->pet()->withTrashed()->restore();
+        });
+    }
 }

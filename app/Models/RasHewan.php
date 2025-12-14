@@ -25,4 +25,17 @@ class RasHewan extends Model
     {
         return $this->belongsTo(JenisHewan::class, 'idjenis_hewan', 'idjenis_hewan');
     }
+
+    protected static function booted()
+    {
+        static::deleted(function ($ras) {
+            $ras->pet()->each(function($p) {
+                $p->delete();
+            });
+        });
+
+        static::restored(function ($ras) {
+            $ras->pet()->withTrashed()->restore();
+        });
+    }
 }
