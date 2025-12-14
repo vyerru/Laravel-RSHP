@@ -167,7 +167,19 @@ Route::middleware(['auth', 'dokter'])->group(function () {
 });
 
 Route::middleware(['auth', 'pemilik'])->group(function () {
+    
+    // 1. Dashboard & Antrian
     Route::get('/pemilik/dashboard', [App\Http\Controllers\Pemilik\DashboardPemilikController::class, 'index'])->name('Pemilik.Dashboard.index');
+
+    // 2. Hewan Saya & Riwayat Medis
+    Route::prefix('pemilik/hewan')->name('Pemilik.Hewan.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Pemilik\HewanSayaController::class, 'index'])->name('index');
+        Route::get('/riwayat/{id}', [App\Http\Controllers\Pemilik\HewanSayaController::class, 'riwayat'])->name('riwayat');
+    });
+
+    // 3. Profil
+    Route::get('/pemilik/profil', [App\Http\Controllers\Pemilik\ProfilSayaController::class, 'index'])->name('Pemilik.Profil.index');
+    Route::put('/pemilik/profil', [App\Http\Controllers\Pemilik\ProfilSayaController::class, 'update'])->name('Pemilik.Profil.update');
 });
 
 Route::middleware(['auth', 'perawat'])->group(function () {
