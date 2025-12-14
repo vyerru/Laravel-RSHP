@@ -114,6 +114,22 @@ Route::middleware(['auth', 'isResepsionis'])->group(function () {
 
 Route::middleware(['auth', 'dokter'])->group(function () {
     Route::get('/dokter/dashboard', [App\Http\Controllers\Dokter\DashboardDokterController::class, 'index'])->name('Dokter.Dashboard.index');
+    Route::prefix('dokter/pasien')->name('Dokter.Pasien.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Dokter\PasienDokterController::class, 'index'])->name('index');
+        Route::get('/{id}', [App\Http\Controllers\Dokter\PasienDokterController::class, 'show'])->name('show');
+    });
+    Route::prefix('dokter/pemeriksaan')->name('Dokter.RekamMedis.')->group(function () {
+        Route::get('/{id_reservasi}', [App\Http\Controllers\Dokter\RekamMedisDokterController::class, 'edit'])->name('edit');
+        Route::put('/update-diagnosa/{id}', [App\Http\Controllers\Dokter\RekamMedisDokterController::class, 'updateDiagnosa'])->name('updateDiagnosa');
+        Route::post('/detail/store', [App\Http\Controllers\Dokter\RekamMedisDokterController::class, 'storeDetail'])->name('storeDetail');
+        Route::delete('/detail/{id}', [App\Http\Controllers\Dokter\RekamMedisDokterController::class, 'destroyDetail'])->name('destroyDetail');
+    });
+    Route::get('/dokter/rekam-medis', function () {
+        return "Halaman Rekam Medis";
+    })->name('Dokter.RekamMedis.index');
+    Route::get('/dokter/profil', function () {
+        return "Halaman Profil Dokter";
+    })->name('Dokter.Profil.index');
 });
 
 Route::middleware(['auth', 'pemilik'])->group(function () {

@@ -36,4 +36,16 @@ class Pet extends Model
             $pet->temuDokter()->withTrashed()->restore();
         });
     }
+
+    public function rekamMedis()
+    {
+        return $this->hasManyThrough(
+            RekamMedis::class,      // Model Tujuan (Akhir)
+            TemuDokter::class,      // Model Perantara
+            'idpet',                // Foreign Key di tabel perantara (temu_dokter.idpet)
+            'idreservasi_dokter',   // Foreign Key di tabel tujuan (rekam_medis.idreservasi_dokter)
+            'idpet',                // Local Key di tabel asal (pet.idpet)
+            'idreservasi_dokter'    // Local Key di tabel perantara (temu_dokter.idreservasi_dokter)
+        );
+    }
 }
