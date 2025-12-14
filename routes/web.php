@@ -152,5 +152,23 @@ Route::middleware(['auth', 'pemilik'])->group(function () {
 });
 
 Route::middleware(['auth', 'perawat'])->group(function () {
+    
+    // 1. Dashboard
     Route::get('/perawat/dashboard', [App\Http\Controllers\Perawat\DashboardPerawatController::class, 'index'])->name('Perawat.Dashboard.index');
+
+    // 2. Data Pasien (Read Only)
+    Route::prefix('perawat/pasien')->name('Perawat.Pasien.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Perawat\PasienPerawatController::class, 'index'])->name('index');
+    });
+
+    // 3. Pemeriksaan Awal (Triage) - Input Anamnesa & Vital
+    Route::prefix('perawat/pemeriksaan')->name('Perawat.Pemeriksaan.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Perawat\RekamMedisPerawatController::class, 'index'])->name('index'); // List Antrian
+        Route::get('/create/{id_reservasi}', [App\Http\Controllers\Perawat\RekamMedisPerawatController::class, 'create'])->name('create'); // Form Input
+        Route::post('/store', [App\Http\Controllers\Perawat\RekamMedisPerawatController::class, 'store'])->name('store'); // Simpan Data
+        Route::get('/show/{id}', [App\Http\Controllers\Perawat\RekamMedisPerawatController::class, 'show'])->name('show'); // Lihat Detail
+    });
+
+    // 4. Profil
+    Route::get('/perawat/profil', [App\Http\Controllers\Perawat\ProfilPerawatController::class, 'index'])->name('Perawat.Profil.index');
 });

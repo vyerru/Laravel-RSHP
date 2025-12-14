@@ -101,9 +101,9 @@ class LoginController extends Controller
             case 2:
                 return redirect()->route('resepsionis.dashboard')->with('success', 'Login Berhasil!');
             case 3:
-                return redirect()->route('dokter.dashboard')->with('success', 'Login Berhasil!');
+                return redirect()->route('Dokter.Dashboard.index')->with('success', 'Login Berhasil!');
             case 4:
-                return redirect()->route('perawat.dashboard')->with('success', 'Login Berhasil!');
+                return redirect()->route('Perawat.Dashboard.index')->with('success', 'Login Berhasil!');
             default:
                 return redirect()->route('pemilik.dashboard')->with('success', 'Login Berhasil!');
                 

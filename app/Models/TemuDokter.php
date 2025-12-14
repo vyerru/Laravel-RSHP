@@ -59,6 +59,6 @@ class TemuDokter extends Model
 
     public function rekamMedis()
     {
-        return $this->hasMany(RekamMedis::class, 'idreservasi_dokter', 'idreservasi_dokter');
+        return $this->hasOne(RekamMedis::class, 'idreservasi_dokter', 'idreservasi_dokter');
     }
 }
