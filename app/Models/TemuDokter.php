@@ -14,15 +14,14 @@ class TemuDokter extends Model
 
     protected $fillable = [
         'no_urut',
-        'waktu_daftar', // Format: Y-m-d H:i:s
-        'status',       // 0: Menunggu, 1: Diperiksa, 2: Selesai, 9: Batal
+        'waktu_daftar', 
+        'status',      
         'idpet',
-        'idrole_user',  // ID Dokter (dari tabel role_user)
+        'idrole_user',  
         'deleted_by'
     ];
     public $timestamps = false;
 
-    // Helper untuk Label Status
     public function getStatusLabelAttribute()
     {
         return match ($this->status) {
@@ -37,10 +36,10 @@ class TemuDokter extends Model
     public function getStatusBadgeAttribute()
     {
         return match ($this->status) {
-            '0' => 'warning', // Kuning
-            '1' => 'info',    // Biru
-            '2' => 'success', // Hijau
-            '9' => 'danger',  // Merah
+            '0' => 'warning', 
+            '1' => 'info',    
+            '2' => 'success', 
+            '9' => 'danger',  
             default => 'secondary',
         };
     }

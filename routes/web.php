@@ -19,19 +19,9 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Middleware\isResepsionis;
 
 Auth::routes();
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::get('/', [SiteController::class, 'index'])->name('index');
-
 Route::get('/layanan', [SiteController::class, 'Layanan']);
-
 Route::get('/cek-koneksi', [SiteController::class, 'cekKoneksi'])->name('Site.cek-koneksi');
-
-
-// Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'isAdministrator'])->group(function () {
     Route::get('/admin/data-master', [DashboardAdminController::class, 'dataMaster'])->name('admin/data-master');
@@ -106,7 +96,7 @@ Route::middleware(['auth', 'isAdministrator'])->group(function () {
 });
 
 Route::middleware(['auth', 'isResepsionis'])->group(function () {
-    
+
     // 1. Dashboard
     Route::get('/resepsionis/dashboard', [App\Http\Controllers\Resepsionis\DashboardResepsionisController::class, 'index'])->name('Resepsionis.Dashboard.index');
 
@@ -167,7 +157,7 @@ Route::middleware(['auth', 'dokter'])->group(function () {
 });
 
 Route::middleware(['auth', 'pemilik'])->group(function () {
-    
+
     // 1. Dashboard & Antrian
     Route::get('/pemilik/dashboard', [App\Http\Controllers\Pemilik\DashboardPemilikController::class, 'index'])->name('Pemilik.Dashboard.index');
 
@@ -183,7 +173,7 @@ Route::middleware(['auth', 'pemilik'])->group(function () {
 });
 
 Route::middleware(['auth', 'perawat'])->group(function () {
-    
+
     // 1. Dashboard
     Route::get('/perawat/dashboard', [App\Http\Controllers\Perawat\DashboardPerawatController::class, 'index'])->name('Perawat.Dashboard.index');
 

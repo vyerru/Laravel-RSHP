@@ -12,11 +12,8 @@ use Illuminate\Support\Facades\Auth;
 class PetController extends Controller
 {
     public function index() {
-        // Ambil data Pet dengan relasinya (Eager Loading)
         $pets = Pet::with(['pemilik.user', 'rasHewan.jenisHewan'])->get();
         
-        // Data untuk Dropdown di Modal
-        // Ambil pemilik yang punya user aktif
         $pemilik = Pemilik::with('user')->get(); 
         $rasHewan = RasHewan::with('jenisHewan')->get();
 

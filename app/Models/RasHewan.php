@@ -7,20 +7,19 @@ use Illuminate\Database\Eloquent\SoftDeletes; // 1. Import SoftDeletes
 
 class RasHewan extends Model
 {
-    use SoftDeletes; // 2. Gunakan Trait
+    use SoftDeletes; 
 
     protected $table = 'ras_hewan';
     protected $primaryKey = 'idras_hewan';
 
     protected $fillable = [
         'nama_ras', 
-        'idjenis_hewan', // Foreign Key
-        'deleted_by'     // Kolom audit soft delete
+        'idjenis_hewan', 
+        'deleted_by'     
     ];
 
     public $timestamps = false;
  
-    // Relasi ke Jenis Hewan (Many to One)
     public function jenisHewan()
     {
         return $this->belongsTo(JenisHewan::class, 'idjenis_hewan', 'idjenis_hewan');

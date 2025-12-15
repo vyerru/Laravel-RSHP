@@ -128,8 +128,7 @@
     </div>
 </div>
 
-{{-- Script untuk mengisi Modal Edit secara dinamis --}}
-@push('scripts') {{-- Pastikan ada @stack('scripts') di layout app, atau taruh script ini langsung jika tidak ada --}}
+@push('scripts') 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var editModal = document.getElementById('editModal');

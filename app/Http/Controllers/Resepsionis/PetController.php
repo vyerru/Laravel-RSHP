@@ -14,10 +14,7 @@ class PetController extends Controller
             'idpemilik' => 'required|exists:pemilik,idpemilik',
             'nama' => 'required|string|max:100',
             'idras_hewan' => 'required|exists:ras_hewan,idras_hewan',
-
-            // UBAH DI SINI: Validasi sekarang mengecek J atau B
             'jenis_kelamin' => 'required|in:J,B',
-
             'tanggal_lahir' => 'required|date',
             'warna_tanda' => 'nullable|string',
         ]);

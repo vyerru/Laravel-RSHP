@@ -18,17 +18,17 @@ class JenisHewan extends Model
         return $this->hasMany(RasHewan::class, 'idjenis_hewan', 'idjenis_hewan');
     }
 
+
+    // Boot method untuk mengatur cascade delete dan restore
     protected static function booted()
     {
         static::deleted(function ($jenis) {
-            // Hapus semua Ras yang terkait
             $jenis->rasHewan()->each(function($ras) {
                 $ras->delete();
             });
         });
 
         static::restored(function ($jenis) {
-            // Kembalikan semua Ras yang terkait (Opsional)
             $jenis->rasHewan()->withTrashed()->restore();
         });
     }

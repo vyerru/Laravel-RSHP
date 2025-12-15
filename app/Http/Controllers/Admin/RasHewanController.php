@@ -5,16 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RasHewan;
-use App\Models\JenisHewan; // Import Model Jenis Hewan
+use App\Models\JenisHewan; 
 use Illuminate\Support\Facades\Auth;
 
 class RasHewanController extends Controller
 {
     public function index() {
-        // Mengambil data Ras beserta data Jenis Hewannya (Eager Loading)
+    
         $rasHewan = RasHewan::with('jenisHewan')->get();
         
-        // Mengambil data Jenis Hewan untuk Dropdown di Modal Tambah/Edit
         $jenisHewan = JenisHewan::all();
         
         return view('Admin.RasHewan.index', compact('rasHewan', 'jenisHewan'));
@@ -54,11 +53,9 @@ class RasHewanController extends Controller
     public function destroy($id) {
         $ras = RasHewan::findOrFail($id);
         
-        // Catat siapa yang menghapus
         $ras->deleted_by = Auth::id();
         $ras->save();
         
-        // Soft Delete
         $ras->delete();
 
         return redirect()->route('Admin.RasHewan.index')

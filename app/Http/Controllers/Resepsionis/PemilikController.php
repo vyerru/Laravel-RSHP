@@ -40,7 +40,7 @@ class PemilikController extends Controller
         ]);
 
         DB::transaction(function () use ($request) {
-            // 1. Buat User (Password default: 123456)
+            // 1. Buat User
             $user = User::create([
                 'nama' => $request->nama,
                 'email' => $request->email,

@@ -36,8 +36,6 @@ class RekamMedisPerawatController extends Controller
             [
                 'anamnesa' => $request->anamnesa,
                 'temuan_klinis' => $request->temuan_klinis,
-                // Beri nilai default 0 atau null untuk dokter_pemeriksa agar tidak error
-                // Nanti akan diupdate oleh Dokter saat pemeriksaan
                 'dokter_pemeriksa' => $request->dokter_pemeriksa_dummy ?? 0
             ]
         );

@@ -49,7 +49,6 @@ class RekamMedisController extends Controller
         ]);
 
         DB::transaction(function () use ($request) {
-            // 1. Simpan Rekam Medis
             RekamMedis::create([
                 'idreservasi_dokter' => $request->idreservasi_dokter,
                 'dokter_pemeriksa' => $request->dokter_pemeriksa,
@@ -58,7 +57,6 @@ class RekamMedisController extends Controller
                 'diagnosa' => $request->diagnosa,
             ]);
 
-            // 2. Update status reservasi menjadi 'Selesai' (2) otomatis
             $reservasi = TemuDokter::find($request->idreservasi_dokter);
             $reservasi->update(['status' => '2']);
         });

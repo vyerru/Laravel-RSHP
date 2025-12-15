@@ -86,24 +86,15 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: function () {
-                // 1. Mengambil model pivot (RoleUser)
                 $roleUserPivot = $this->roleUser->first(); 
-                
-                // 2. Jika user tidak punya role
                 if (!$roleUserPivot) {
                     return null;
                 }
-
-                // 3. Mengambil model Role DARI pivot
-                //    (Ini memanggil relasi 'role()' di RoleUser.php)
                 $roleModel = $roleUserPivot->role; 
                 
                 if (!$roleModel) {
                     return null; 
                 }
-
-                // 4. Ambil nama role dari model Role
-                //    (Kolom di tabel 'role' Anda adalah 'role')
                 return $roleModel->nama_role; 
             },
         );

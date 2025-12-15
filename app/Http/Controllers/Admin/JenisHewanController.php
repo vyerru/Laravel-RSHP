@@ -43,12 +43,8 @@ class JenisHewanController extends Controller
 
     public function destroy($id) {
         $jenisHewan = JenisHewan::findOrFail($id);
-        
-        // Simpan ID user yang menghapus (untuk audit trail soft delete)
         $jenisHewan->deleted_by = Auth::id();
         $jenisHewan->save();
-        
-        // Lakukan Soft Delete
         $jenisHewan->delete();
 
         return redirect()->route('Admin.jenis-hewan.index')

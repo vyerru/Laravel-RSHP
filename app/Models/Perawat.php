@@ -8,8 +8,6 @@ class Perawat extends Model
 {
     protected $table = 'perawat';
     protected $primaryKey = 'id_perawat';
-    
-    // --- TAMBAHKAN/UPDATE BAGIAN INI ---
     protected $fillable = [
         'id_user', 
         'alamat', 
@@ -19,7 +17,6 @@ class Perawat extends Model
     ];
 
     public $timestamps = false;
-    // -----------------------------------
 
     public function user()
     {
